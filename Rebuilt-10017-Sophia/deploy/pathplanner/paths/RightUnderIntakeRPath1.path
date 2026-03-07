@@ -1,0 +1,86 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.7840085592011405,
+        "y": 3.148701854493581
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.341602409638554,
+        "y": 3.510469879518072
+      },
+      "isLocked": false,
+      "linkedName": "RShoot"
+    },
+    {
+      "anchor": {
+        "x": 2.904493975903614,
+        "y": 1.871313253012048
+      },
+      "prevControl": {
+        "x": 2.9974270735810564,
+        "y": 2.105858690007498
+      },
+      "nextControl": {
+        "x": 2.4455301204819264,
+        "y": 0.7129759036144581
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.521795180722892,
+        "y": 0.6036987951807224
+      },
+      "prevControl": {
+        "x": 4.272140723389764,
+        "y": 0.6168385034614131
+      },
+      "nextControl": {
+        "x": 5.144674698795182,
+        "y": 0.5709156626506025
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.3384165477888725,
+        "y": 0.858559201141228
+      },
+      "prevControl": {
+        "x": 6.3384165477888725,
+        "y": 0.8585592011412281
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "UnderIntake1ConnectR"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "OuterIntake1 (2)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
