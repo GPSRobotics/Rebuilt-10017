@@ -11,9 +11,17 @@
 #include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
 
-  // Configure the button bindings
+  drive.SetDefaultCommand(
+    frc2::cmd::Run([this] {
+      
+      double left = -m_driverController.GetLeftY();
+      double right = -m_driverController.GetRightY();
+
+      drive.Drive(left, right);
+
+    }, {&drive})
+  );
   ConfigureBindings();
 }
 

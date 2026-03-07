@@ -37,7 +37,7 @@ ShooterSubsystem::ShooterSubsystem():
     }
 
     void ShooterSubsystem::ShooterShoot(){
-        SetRPM(5000);
+        SetRPM(1000);
     }
 
     void ShooterSubsystem::ShooterStop(){
@@ -45,7 +45,7 @@ ShooterSubsystem::ShooterSubsystem():
     }
 
     void ShooterSubsystem::ShooterBack(){
-        SetRPM(-5000);
+        SetRPM(-1000);
     }
 
     void ShooterSubsystem::SetRPM(double rpm){

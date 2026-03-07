@@ -12,13 +12,8 @@
 #include "subsystems/IntakeSubsystem/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
 
-/**
- * This class is where the bulk of the robot should be declared.  Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls).  Instead, the structure of the robot (including subsystems,
- * commands, and trigger mappings) should be declared here.
- */
+#include "subsystems/DriveSubsystem/DriveSubsystem.h"
+
 class RobotContainer {
  public:
   RobotContainer();
@@ -28,6 +23,7 @@ class RobotContainer {
  private:
 
   ShooterSubsystem shooter{};
+  DriveSubsystem drive{};
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{
