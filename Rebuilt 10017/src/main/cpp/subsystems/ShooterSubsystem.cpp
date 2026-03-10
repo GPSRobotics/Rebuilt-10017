@@ -1,21 +1,13 @@
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
 #include "rev/config/SparkFlexConfig.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace rev::spark;
 using namespace frc;
 
 ShooterSubsystem::ShooterSubsystem():
     kRightShooterMotor{ShooterConstants::kRightMotorPort, SparkLowLevel::MotorType::kBrushless},
-    kLeftShooterMotor{ShooterConstants::kLeftMotorPort, SparkLowLevel::MotorType::kBrushless},
-
-    m_leftController{kLeftShooterMotor.GetClosedLoopController()},
-    m_rightController{kRightShooterMotor.GetClosedLoopController()},
-
-    m_leftEncoder{kLeftShooterMotor.GetEncoder()},
-    m_rightEncoder{kRightShooterMotor.GetEncoder()}
-
-    {       
+    kLeftShooterMotor{ShooterConstants::kLeftMotorPort, SparkLowLevel::MotorType::kBrushless}
+    {
         SparkFlexConfig rightConfig{};
         rightConfig.Inverted(false)
                     .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
@@ -32,31 +24,19 @@ ShooterSubsystem::ShooterSubsystem():
     
     }
 
-    void ShooterSubsystem::Periodic() {
-        frc::SmartDashboard::PutNumber("RPM", GetRPM());
-    }
+    void ShooterSubsystem::Periodic() {}
 
     void ShooterSubsystem::ShooterShoot(){
-        SetRPM(1000);
+        kRightShooterMotor.Set(1.0);
+        kLeftShooterMotor.Set(1.0);
     }
 
     void ShooterSubsystem::ShooterStop(){
-        SetRPM(0);
+        kRightShooterMotor.Set(0.0);
+        kLeftShooterMotor.Set(0.0);
     }
 
     void ShooterSubsystem::ShooterBack(){
-        SetRPM(-1000);
-    }
-
-    void ShooterSubsystem::SetRPM(double rpm){
-        m_targetRPM = rpm;
-
-        m_leftController.SetReference(rpm, rev::spark::SparkBase::ControlType::kVelocity);
-        m_rightController.SetReference(rpm, rev::spark::SparkBase::ControlType::kVelocity);
-
-    }
-
-    double ShooterSubsystem::GetRPM(){
-        return (m_leftEncoder.GetVelocity() + m_rightEncoder.GetVelocity()) / 2.0;
-    
+        kRightShooterMotor.Set(-1.0);
+        kLeftShooterMotor.Set(-1.0);
     }
