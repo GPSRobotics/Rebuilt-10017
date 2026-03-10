@@ -15,11 +15,8 @@ RobotContainer::RobotContainer() {
   drive.SetDefaultCommand(
     frc2::cmd::Run([this] {
       
-      double forward = -m_driverController.GetLeftY();
-      double turn = m_driverController.GetRightX();
-
-      double left = forward + turn;
-      double right = forward - turn;
+      double left = -m_driverController.GetLeftY();
+      double right = -m_driverController.GetRightY();
 
       drive.Drive(left, right);
 
