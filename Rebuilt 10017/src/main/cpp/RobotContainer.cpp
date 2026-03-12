@@ -12,16 +12,14 @@
 
 RobotContainer::RobotContainer() {
 
-  drive.SetDefaultCommand(
+drive.SetDefaultCommand(
     frc2::cmd::Run([this] {
-      
-      double left = -m_driverController.GetLeftY();
-      double right = -m_driverController.GetRightY();
-
-      drive.Drive(left, right);
-
+        double left = -m_driverController.GetLeftY();
+        double right = -m_driverController.GetRightY();
+        double strafe = m_driverController.GetLeftX();
+        drive.Drive(left, right, strafe);
     }, {&drive})
-  );
+);
   ConfigureBindings();
 }
 

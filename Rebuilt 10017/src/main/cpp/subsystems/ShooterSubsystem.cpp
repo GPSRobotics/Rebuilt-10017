@@ -8,44 +8,49 @@ using namespace frc;
 ShooterSubsystem::ShooterSubsystem():
     kRightShooterMotor{ShooterConstants::kRightMotorPort, SparkLowLevel::MotorType::kBrushless},
     kLeftShooterMotor{ShooterConstants::kLeftMotorPort, SparkLowLevel::MotorType::kBrushless},
-
-    m_leftController{kLeftShooterMotor.GetClosedLoopController()},
     m_rightController{kRightShooterMotor.GetClosedLoopController()},
+    m_leftController{kLeftShooterMotor.GetClosedLoopController()},
+    m_rightEncoder{kRightShooterMotor.GetEncoder()},
+    m_leftEncoder{kLeftShooterMotor.GetEncoder()}
+{       
+    SparkFlexConfig rightConfig{};
+    rightConfig.Inverted(false)
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
+    rightConfig.closedLoop
+        .P(ShooterConstants::KP)
+        .I(ShooterConstants::KI)
+        .D(ShooterConstants::KD)
+        .VelocityFF(ShooterConstants::KFF);
+    kRightShooterMotor.Configure(rightConfig, 
+        SparkFlex::ResetMode::kResetSafeParameters,
+        SparkFlex::PersistMode::kPersistParameters);
 
-    m_leftEncoder{kLeftShooterMotor.GetEncoder()},
-    m_rightEncoder{kRightShooterMotor.GetEncoder()}
-
-    {       
-        SparkFlexConfig rightConfig{};
-        rightConfig.Inverted(false)
-                    .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
-        kRightShooterMotor.Configure(rightConfig,
-            SparkFlex::ResetMode::kResetSafeParameters,
-            SparkFlex::PersistMode::kPersistParameters);
-
-         SparkFlexConfig leftConfig{};
-        leftConfig.Inverted(true)
-                    .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
-        kLeftShooterMotor.Configure(leftConfig,
-            SparkFlex::ResetMode::kResetSafeParameters,
-            SparkFlex::PersistMode::kPersistParameters);            
-    
-    }
+    SparkFlexConfig leftConfig{};
+    leftConfig.Inverted(true)
+        .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
+    leftConfig.closedLoop
+        .P(ShooterConstants::KP)
+        .I(ShooterConstants::KI)
+        .D(ShooterConstants::KD)
+        .VelocityFF(ShooterConstants::KFF);
+    kLeftShooterMotor.Configure(leftConfig,               
+        SparkFlex::ResetMode::kResetSafeParameters,
+        SparkFlex::PersistMode::kPersistParameters);            
+}
 
     void ShooterSubsystem::Periodic() {
-        frc::SmartDashboard::PutNumber("RPM", GetRPM());
     }
 
     void ShooterSubsystem::ShooterShoot(){
-        SetRPM(1000);
+        SetRPM(1000.0);
     }
 
     void ShooterSubsystem::ShooterStop(){
-        SetRPM(0);
+        SetRPM(0.0);
     }
 
     void ShooterSubsystem::ShooterBack(){
-        SetRPM(-1000);
+        SetRPM(-1000.0);
     }
 
     void ShooterSubsystem::SetRPM(double rpm){

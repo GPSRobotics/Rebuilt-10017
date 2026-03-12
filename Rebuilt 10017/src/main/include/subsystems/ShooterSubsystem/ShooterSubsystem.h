@@ -22,15 +22,11 @@ public:
     double GetRPM();
 
 private:
-    
-    rev::spark::SparkFlex kLeftShooterMotor;
-    rev::spark::SparkFlex kRightShooterMotor;
-
-    rev::spark::SparkClosedLoopController m_leftController;
+    rev::spark::SparkFlex kRightShooterMotor;  // right first
+    rev::spark::SparkFlex kLeftShooterMotor;   // left second
     rev::spark::SparkClosedLoopController m_rightController;
-
-    rev::spark::SparkRelativeEncoder m_leftEncoder;
+    rev::spark::SparkClosedLoopController m_leftController;
     rev::spark::SparkRelativeEncoder m_rightEncoder;
-
-double m_targetRPM = 0;
+    rev::spark::SparkRelativeEncoder m_leftEncoder;
+    double m_targetRPM = 100.0;
 };
