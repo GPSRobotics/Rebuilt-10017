@@ -1,34 +1,74 @@
 #include "subsystems/DriveSubsystem/DriveSubsystem.h"
-#include "rev/config/SparkMaxConfig.h"
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <cmath>
+#include "subsystems/DriveSubsystem/Constants.h"
 
-using namespace rev::spark;
+#include <ctre/phoenix6/controls/DutyCycleOut.hpp>
+#include <rev/config/SparkMaxConfig.h>
+#include <algorithm>
 
-DriveSubsystem::DriveSubsystem() {
-    SparkMaxConfig centerConfig{};
-    centerConfig.Inverted(false)
-        .SetIdleMode(SparkMaxConfig::IdleMode::kBrake);
-    m_centerMotor.Configure(centerConfig,
-        SparkMax::ResetMode::kResetSafeParameters,
-        SparkMax::PersistMode::kPersistParameters);
+using namespace ctre::phoenix6;
+using namespace DriveConstants;
 
-    frc::SmartDashboard::PutNumber("Left Drive", 0.0);
-    frc::SmartDashboard::PutNumber("Right Drive", 0.0);
+// ─────────────────────────────────────────────────────────────────────────────
+//  Constructor
+// ─────────────────────────────────────────────────────────────────────────────
+DriveSubsystem::DriveSubsystem()
+    : leftMotor  { kLeftMotorID  }
+    , rightMotor { kRightMotorID }
+    , middleMotor{ kMiddleMotorID, rev::spark::SparkLowLevel::MotorType::kBrushless }
+{
+    // ── Left TalonFX ──────────────────────────────────────────
+    configs::TalonFXConfiguration leftConfig{};
+    leftConfig.MotorOutput.Inverted = signals::InvertedValue::CounterClockwise_Positive;
+    leftMotor.GetConfigurator().Apply(leftConfig);
+
+    // ── Right TalonFX (inverted) ──────────────────────────────
+    configs::TalonFXConfiguration rightConfig{};
+    rightConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive;
+    rightMotor.GetConfigurator().Apply(rightConfig);
+
+    // ── H-wheel SparkMax (NEO) ────────────────────────────────
+    rev::spark::SparkMaxConfig middleConfig{};
+    middleConfig.SetIdleMode(rev::spark::SparkMaxConfig::IdleMode::kBrake);
+    middleConfig.Inverted(false);
+
+    middleMotor.Configure(middleConfig,
+        rev::ResetMode::kResetSafeParameters,
+        rev::PersistMode::kPersistParameters);
 }
 
-void DriveSubsystem::Drive(double leftSpeed, double rightSpeed, double strafeSpeed) {
-    if (std::abs(strafeSpeed) < 0.1) strafeSpeed = 0.0;
-    m_leftMotor.Set(leftSpeed);
-    m_rightMotor.Set(rightSpeed);
-    m_centerMotor.Set(strafeSpeed);
-    frc::SmartDashboard::PutNumber("Left Motor Output", leftSpeed);
-    frc::SmartDashboard::PutNumber("Right Motor Output", rightSpeed);
-    frc::SmartDashboard::PutNumber("Strafe Output", strafeSpeed);
+// ─────────────────────────────────────────────────────────────────────────────
+//  Periodic
+// ─────────────────────────────────────────────────────────────────────────────
+void DriveSubsystem::Periodic()
+{
+    leftPosition.Refresh();
+    rightPosition.Refresh();
+
+    frc::SmartDashboard::PutNumber("Drive/LeftEncoder",   leftPosition.GetValue().value());
+    frc::SmartDashboard::PutNumber("Drive/RightEncoder",  rightPosition.GetValue().value());
+    frc::SmartDashboard::PutNumber("Drive/HWheelPower",   middleMotor.Get());
 }
 
-void DriveSubsystem::Periodic() {
-    double left = frc::SmartDashboard::GetNumber("Left Drive", 0.0);
-    double right = frc::SmartDashboard::GetNumber("Right Drive", 0.0);
-    Drive(left, right, 0.0);
+// ─────────────────────────────────────────────────────────────────────────────
+//  ArcadeDrive — left/right drive motors
+// ─────────────────────────────────────────────────────────────────────────────
+void DriveSubsystem::ArcadeDrive(double speed, double rotation)
+{
+    double leftOutput  = std::clamp(speed + rotation, -1.0, 1.0);
+    double rightOutput = std::clamp(speed - rotation, -1.0, 1.0);
+
+    controls::DutyCycleOut leftControl  {leftOutput};
+    controls::DutyCycleOut rightControl {rightOutput};
+
+    leftMotor.SetControl(leftControl);
+    rightMotor.SetControl(rightControl);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  SetHWheelPower — centre strafing wheel
+// ─────────────────────────────────────────────────────────────────────────────
+void DriveSubsystem::SetHWheelPower(double power)
+{
+    // Clamp to safe range and apply
+    middleMotor.Set(std::clamp(power, -1.0, 1.0));
 }

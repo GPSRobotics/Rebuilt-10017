@@ -1,36 +1,34 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/button/CommandXboxController.h>
 
-#include "GlobalConstants.h"
-#include "subsystems/IntakeSubsystem/IntakeSubsystem.h"
+#include "subsystems/Drivesubsystem/DriveSubsystem.h"
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
-
-#include "subsystems/DriveSubsystem/DriveSubsystem.h"
+#include "subsystems/InjectorSubsystem/InjectorSubsystem.h"
+#include "subsystems/LinearActuatorSubsystem/LinearActuatorSubsystem.h"
+#include "subsystems/IntakeSubsystem/IntakeSubsystem.h"
+#include "subsystems/AgitatorSubsystem/AgitatorSubsystem.h"
 
 class RobotContainer {
- public:
-  RobotContainer();
+public:
+    RobotContainer();
 
-  frc2::CommandPtr GetAutonomousCommand();
+    std::optional<frc2::CommandPtr> GetAutonomousCommand();
 
- private:
+private:
+    // Subsystems
+    DriveSubsystem          drive;
+    ShooterSubsystem        shooter{};
+    InjectorSubsystem       injector{};
+    LinearActuatorSubsystem actuator{};
+    IntakeSubsystem         intake{};
+    AgitatorSubsystem       agitator{};
 
-  ShooterSubsystem shooter{};
-  DriveSubsystem drive{};
+    // Controller
+    frc2::CommandXboxController driverController{0};
+    frc2::CommandXboxController codriverController{1};
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  frc2::CommandXboxController m_driverController{
-      OperatorConstants::kDriverControllerPort};
-
-  // The robot's subsystems are defined here...
-  IntakeSubsystem Intake;
-
-  void ConfigureBindings();
+    void ConfigureBindings();
 };

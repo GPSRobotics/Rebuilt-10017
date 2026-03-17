@@ -18,12 +18,14 @@ namespace OperatorConstants {
 
 inline constexpr int kDriverControllerPort = 0;
 
+inline constexpr int kCoDriverControllerPort = 1;
+
+}  // namespace OperatorConstants
 
 
 namespace IntakeConstants{
   constexpr int IntakePort = 1;
 };
-}  // namespace OperatorConstants
 
 namespace HopperConstants {
 
@@ -36,4 +38,3 @@ namespace IndexerConstants {
     constexpr int kIndexerMotor = 1;
     constexpr double kIndexerSpeed = 1;
 };
-
