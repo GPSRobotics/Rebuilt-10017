@@ -1,35 +1,115 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "RobotContainer.h"
+#include "GlobalConstants.h"
+#include "subsystems/DriveSubsystem/Constants.h"
 
-#include <frc2/command/button/Trigger.h>
+#include <frc2/command/Commands.h>
+#include <frc2/command/RunCommand.h>
+#include <frc2/command/button/JoystickButton.h>
+#include <frc/MathUtil.h>
+#include <units/time.h>
 
-#include "commands/Autos.h"
-#include "commands/ExampleCommand.h"
+using namespace units::literals;
 
 RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
+    ConfigureBindings();
 
-  // Configure the button bindings
-  ConfigureBindings();
+    // ── Default drive command ─────────────────────────────────
+    drive.SetDefaultCommand(frc2::RunCommand(
+        [this] {
+            double speed    = frc::ApplyDeadband( driverController.GetLeftY(),  0.1);
+            double rotation = frc::ApplyDeadband(-driverController.GetRightX(), 0.1);
+            double strafe   = frc::ApplyDeadband(driverController.GetLeftX(),  0.1);
+
+            drive.ArcadeDrive(speed, rotation);
+            drive.SetHWheelPower(strafe);
+        },
+        {&drive}
+    ));
 }
 
 void RobotContainer::ConfigureBindings() {
-  // Configure your trigger bindings here
 
-  // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  frc2::Trigger([this] {
-    return m_subsystem.ExampleCondition();
-  }).OnTrue(ExampleCommand(&m_subsystem).ToPtr());
+    //  ── LT: intake off ───────────────────────────────────────
+    // driverController.LeftTrigger().WhileTrue(frc2::cmd::Run([this]() {
+    //     intake.IntakeOff();
+    // }, {&intake}));
 
-  // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
-  // pressed, cancelling on release.
-  m_driverController.B().WhileTrue(m_subsystem.ExampleMethodCommand());
+    /*driverController.A().OnTrue(
+        frc2::cmd::Sequence(
+            frc2::cmd::RunOnce([this]() {
+                intake.Stow();
+            }, {&intake}),
+            frc2::cmd::WaitUntil([this]() {
+                return intake.ArmAtTarget();
+            }).WithTimeout(7_s),
+            frc2::cmd::Run([this]() {
+                intake.Deploy();
+            }, {&intake})
+        )
+    );*/
+
+    driverController.A().OnTrue(frc2::cmd::Run([this](){
+        intake.Deploy();
+    }, {&intake}));
+
+    // ── B: stow intake ────────────────────────────────────────
+    /*driverController.B().OnTrue(frc2::cmd::RunOnce([this]() {
+        intake.Stow();
+    }, {&intake}));
+*/  
+    driverController.B().WhileTrue(frc2::cmd::Run([this](){
+        intake.IntakeOff();
+    }, {&intake}));
+
+    // ── RT: shoot sequence ────────────────────────────────────
+    driverController.RightTrigger().WhileTrue(
+        frc2::cmd::Sequence(
+            frc2::cmd::RunOnce([this]() {
+                shooter.ShooterCorner();
+            }, {&shooter}),
+            frc2::cmd::WaitUntil([this]() {
+                return shooter.AtTargetRPM();
+            }).WithTimeout(3_s),
+            frc2::cmd::Run([this]() {
+                injector.InjectorOut();
+                agitator.AgitatorAgitate();
+            }, {&injector, &agitator})
+        )
+    );
+   
+
+    // ── X: stop all ──────────────────────────────────────────
+    driverController.X().OnTrue(frc2::cmd::RunOnce([this]() {
+        shooter.ShooterOff();
+        injector.InjectorOff();
+        agitator.AgitatorOff();
+    }, {&shooter, &injector, &agitator}));
+
+     driverController.POVUp().WhileTrue(frc2::cmd::Run([this]() {
+        shooter.ShooterCorner();
+        injector.InjectorIn();
+        agitator.AgitatorIn();
+    }, {&shooter, &injector, &agitator}));
+
+     driverController.POVDown().WhileTrue(frc2::cmd::Run([this]() {
+        shooter.ShooterBarge();
+        injector.InjectorIn();
+        agitator.AgitatorIn();
+    }, {&shooter, &injector, &agitator}));
+
+     driverController.POVLeft().WhileTrue(frc2::cmd::Run([this]() {
+        shooter.ShooterHub();
+        injector.InjectorIn();
+        agitator.AgitatorIn();
+    }, {&shooter, &injector, &agitator}));
+    
+     driverController.POVRight().WhileTrue(frc2::cmd::Run([this]() {
+        shooter.ShooterTower();
+        injector.InjectorIn();
+        agitator.AgitatorIn();
+    }, {&shooter, &injector, &agitator}));
 }
 
-frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() {
+    return std::nullopt;
 }
