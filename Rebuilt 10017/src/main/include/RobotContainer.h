@@ -13,6 +13,9 @@
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
 
 #include "subsystems/DriveSubsystem/DriveSubsystem.h"
+#include <frc/XboxController.h>
+#include "subsystems/Feeder/Feeder.h"
+#include "subsystems/Indexer/Indexer.h"
 
 class RobotContainer {
  public:
@@ -29,8 +32,13 @@ class RobotContainer {
   frc2::CommandXboxController m_driverController{
       OperatorConstants::kDriverControllerPort};
 
+  frc::XboxController driverController{
+      OperatorConstants::kDriverControllerPort};
+
   // The robot's subsystems are defined here...
   IntakeSubsystem Intake;
+  FeederSubsystem Feeder;
+  IndexerSubsystem Indexer;
 
   void ConfigureBindings();
 };

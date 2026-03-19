@@ -10,6 +10,15 @@
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/Commands.h>
 
+#include "commands/Autos.h"
+#include "commands/ExampleCommand.h"
+#include "Constants.h"
+#include "subsystems/Indexer/Indexer.h"
+#include "subsystems/Feeder/Feeder.h"
+#include "frc2/command/Commands.h"
+#include "frc2/command/button/JoystickButton.h"
+
+
 RobotContainer::RobotContainer() {
 
 drive.SetDefaultCommand(
@@ -45,11 +54,34 @@ void RobotContainer::ConfigureBindings() {
 
   m_driverController.LeftTrigger().WhileTrue(frc2::cmd::Run([this](){
     shooter.ShooterBack();
-  }, {&shooter}));
+  }, {&shooter})); 
+  
+  //Runs Feeder 
+
+  frc2::JoystickButton(&driverController, frc::XboxController::Button::kRightBumper)
+  .OnTrue(
+
+    frc2::cmd::RunOnce(
+     
+      [this] { Feeder.ToggleFeeder(); }, {&Feeder}
+      
+    )
+  );
+
+  //Runs Indexer
+
+  frc2::JoystickButton(&driverController, frc::XboxController::Button::kRightBumper)
+  .OnTrue(
+
+    frc2::cmd::RunOnce(
+     
+      [this] { Indexer.ToggleIndexer(); }, {&Indexer}
+
+    )
+  );
   
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
 }
- 
