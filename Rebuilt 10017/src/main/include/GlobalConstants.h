@@ -27,7 +27,12 @@ namespace IntakeConstants{
 
 namespace IndexerConstants {
 
-    constexpr int kIndexerMotor = 1;
-    constexpr double kIndexerSpeed = 1;
+    constexpr int kIndexerMotor = 1; 
+    constexpr double kIndexerSpeed = 0.8; 
 };
 
+namespace FeederConstants {
+
+    constexpr int kFeederMotor = 2; 
+    constexpr double kFeederSpeed = 1; 
+}; 
