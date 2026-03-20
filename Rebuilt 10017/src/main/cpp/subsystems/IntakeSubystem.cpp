@@ -16,7 +16,7 @@ IntakeSubsystem::IntakeSubsystem()
 {
     // ── Roller (SparkFlex) config ─────────────────────────────
     rev::spark::SparkFlexConfig rollerConfig{};
-    rollerConfig.Inverted(false)
+    rollerConfig.Inverted(true)
                 .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
 
     intakeMotor.Configure(rollerConfig,
@@ -66,10 +66,10 @@ void IntakeSubsystem::Periodic()
 // ─────────────────────────────────────────────────────────────────────────────
 //  Roller control
 // ─────────────────────────────────────────────────────────────────────────────
-void IntakeSubsystem::IntakeOut()    { intakeMotor.Set(IntakePower); }
+void IntakeSubsystem::IntakeOut()    { intakeMotor.Set(-IntakePower); }
 void IntakeSubsystem::IntakeOff()    { intakeMotor.Set(0.0); }
-void IntakeSubsystem::IntakeIntake() { intakeMotor.Set(-IntakePower); }
-void IntakeSubsystem::IntakeIn()     { intakeMotor.Set(-IntakePower); }
+void IntakeSubsystem::IntakeIntake() { intakeMotor.Set(IntakePower); }
+void IntakeSubsystem::IntakeIn()     { intakeMotor.Set(IntakePower); }
 
 void IntakeSubsystem::SetIntakePower(double newPower) {
     IntakePower = newPower;
@@ -93,7 +93,13 @@ void IntakeSubsystem::SetArmAngle(double degrees)
 void IntakeSubsystem::Deploy()
 {
     SetArmAngle(IntakeConstants::kDeployAngle);
-    intakeMotor.Set(-IntakePower); 
+    intakeMotor.Set(IntakePower); 
+}
+
+void IntakeSubsystem::DeployReverse()
+{
+    SetArmAngle(IntakeConstants::kDeployAngle);
+    intakeMotor.Set(-0.2);
 }
 
 void IntakeSubsystem::Stow()

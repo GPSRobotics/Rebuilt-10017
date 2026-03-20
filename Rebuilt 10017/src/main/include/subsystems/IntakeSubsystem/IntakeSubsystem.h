@@ -37,6 +37,7 @@ public:
     // ── Arm control ─────────────────────────────────────────
     void SetArmAngle(double degrees);
     void Deploy();
+    void DeployReverse();
     void Stow();
     double GetArmAngle() const;
     bool   ArmAtTarget() const;

@@ -10,6 +10,7 @@ using namespace rev::spark;
 InjectorSubsystem::InjectorSubsystem() :
     injectorMotor{InjectorConstants::kInjectorPort, SparkLowLevel::MotorType::kBrushless}
 {
+    //  motor config (not inverted)
     rev::spark::SparkFlexConfig Config{};
     Config.Inverted(true)
               .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);

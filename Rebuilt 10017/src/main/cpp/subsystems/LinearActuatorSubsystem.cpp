@@ -1,3 +1,10 @@
+//DOESN'T WORK
+
+
+
+
+
+//DOESN'T WORK
 #include "subsystems/LinearActuatorSubsystem/LinearActuatorSubsystem.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -5,7 +12,7 @@
 #include <algorithm>
 
 using namespace ActuonixL16;
-using namespace units::literals;
+using namespace units::literals; // enables the _us literal suffix
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Constructor
@@ -13,14 +20,18 @@ using namespace units::literals;
 LinearActuatorSubsystem::LinearActuatorSubsystem()
     : m_servo(kPwmChannel)
 {
+    // SetBounds requires units::microsecond_t in WPILib 2026.
+    // Literal values used directly so this compiles regardless of
+    // whether constants.h defines the pulse-width consts as double.
     m_servo.SetBounds(
-        2000_us,   
-        1520_us,  
-        1500_us,  
-        1480_us,  
-        1000_us  
+        2000_us,   // max          – full extension
+        1520_us,   // deadbandMax
+        1500_us,   // centre
+        1480_us,   // deadbandMin
+        1000_us    // min          – full retraction
     );
 
+    // Start fully retracted
     SetRetracted();
 }
 
