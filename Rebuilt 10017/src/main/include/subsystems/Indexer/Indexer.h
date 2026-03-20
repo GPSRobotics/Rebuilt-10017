@@ -1,8 +1,8 @@
 #pragma once 
 
 #include <frc2/command/SubsystemBase.h>
-#include <frc/motorcontrol/PWMSparkFlex.h> 
-#include "Constants.h"
+#include <rev/SparkMax.h>
+#include "GlobalConstants.h"
 
 
 class IndexerSubsystem : public frc2::SubsystemBase {
@@ -15,11 +15,14 @@ public:
     
     void StopIndexer();
 
+    bool ToggleIndexer();
+
 private: 
 
-    frc::PWMSparkFlex indexerMotor{
+    rev::spark::SparkMax indexerMotor{
 
-        IndexerConstants::kIndexerMotor
+        IndexerConstants::kIndexerMotor,
+        rev::spark::SparkMax::MotorType::kBrushless
     };
 
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "subsystems/ShooterSubsystem/Constants.h"
+#include "GlobalConstants.h"
 
 #include <frc2/command/Command.h>
 #include <frc2/command/Commands.h>
