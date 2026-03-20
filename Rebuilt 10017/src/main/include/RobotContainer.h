@@ -25,14 +25,8 @@ class RobotContainer {
 
  private:
 
-  ShooterSubsystem shooter{};
-  DriveSubsystem drive{};
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   frc2::CommandXboxController m_driverController{
-      OperatorConstants::kDriverControllerPort};
-
-  frc::XboxController driverController{
       OperatorConstants::kDriverControllerPort};
 
   // The robot's subsystems are defined here...
@@ -44,9 +38,9 @@ class RobotContainer {
 
   void ConfigureBindings();
   void Shoot(); 
-  void DriveForward(double SL, double SR, double SH);
   void TurnRight();
   void TurnLeft();
-  void DriveBackwards(double SL, double SR, double SH);
   void ShootStop();
+  frc2::CommandPtr DriveForward();
+  frc2::CommandPtr DriveBackwards();
 };
