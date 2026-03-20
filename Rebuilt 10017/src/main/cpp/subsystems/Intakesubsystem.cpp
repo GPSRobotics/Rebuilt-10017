@@ -19,10 +19,12 @@ Intake{IntakeConstants::IntakePort, rev::spark::SparkLowLevel::MotorType::kBrush
 
 void IntakeSubsystem::On(){
 
-     IntakeConstants::IntakeSpeed = 1.0;
+     IntakeConstants::IntakeSpeed = 0.75;
+     Intake.Set(IntakeConstants::IntakeSpeed);
 
 };
 void IntakeSubsystem::Off(){
     
-    IntakeConstants::IntakeSpeed = 0.0; 
+    IntakeConstants::IntakeSpeed = 0.0;
+    Intake.Set(IntakeConstants::IntakeSpeed); 
 };
