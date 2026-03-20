@@ -44,9 +44,9 @@ class RobotContainer {
 
   void ConfigureBindings();
   void Shoot(); 
-  void DriveForward(double RunTime);
+  void DriveForward(double SL, double SR, double SH);
   void TurnRight();
   void TurnLeft();
-  void DriveBackwards(double RunTime);
+  void DriveBackwards(double SL, double SR, double SH);
   void ShootStop();
 };

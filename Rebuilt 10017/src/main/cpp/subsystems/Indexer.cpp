@@ -15,17 +15,3 @@ void IndexerSubsystem::StopIndexer() {
     indexerMotor.Set(0);
 };
 
-bool IndexerSubsystem::ToggleIndexer() {
-
-    if (Toggles::toggleRB) {
-
-        IndexerSubsystem::RunIndexer();
-        Toggles::toggleRB == !Toggles::toggleRB;
-    }
-
-    else {
-
-        IndexerSubsystem::StopIndexer();
-        Toggles::toggleRB == !Toggles::toggleRB;
-    };
-};

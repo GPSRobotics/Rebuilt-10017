@@ -38,9 +38,14 @@ namespace FeederConstants {
     extern double kFeederSpeed;
 }; 
 
+namespace Timers {
+
+    extern int TimerRB;
+}
+
 namespace Toggles {
 
-    extern bool toggleRB;
+    extern bool IntakeToggle;
 }
 
 

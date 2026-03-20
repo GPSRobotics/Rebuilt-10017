@@ -14,6 +14,7 @@
 #include "frc2/command/Commands.h"
 #include "frc2/command/button/JoystickButton.h"
 #include "frc2/command/WaitCommand.h"
+#include <units/time.h>
 
 
 
@@ -33,12 +34,17 @@ drive.SetDefaultCommand(
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
-  m_driverController.X().WhileTrue(frc2::cmd::Run([this](){
-      Intake.On();
-  },{&Intake}));
+  m_driverController.X().OnTrue(frc2::cmd::Run([this](){
+      
+    Intake.Off();
+    Indexer.StopIndexer();
+    Feeder.StopFeeder();
+    Shooter.ShooterStop();
+  },{&Intake, &Indexer, &Feeder, &Shooter}));
   
- m_driverController.Y().WhileTrue(frc2::cmd::Run([this](){
-      Intake.Off();
+ m_driverController.Y().OnTrue(frc2::cmd::Run([this](){
+
+      Intake.On();
   },{&Intake}));
   //d pad up On
   //d pad down Off
@@ -57,28 +63,19 @@ void RobotContainer::ConfigureBindings() {
   
   //Runs Feeder 
 
-  frc2::JoystickButton(&driverController, frc::XboxController::Button::kRightBumper)
-  .OnTrue(
+  m_driverController.RightTrigger()
+  .WhileTrue(
 
     frc2::cmd::RunOnce(
      
-      [this] { Feeder.ToggleFeeder(); }, {&Feeder}
+      [this] { 
+        Feeder.RunFeeder(); 
+        Indexer.RunIndexer();
+
+      }, {&Feeder}
       
     )
   );
-
-  //Runs Indexer
-
-  frc2::JoystickButton(&driverController, frc::XboxController::Button::kRightBumper)
-  .OnTrue(
-
-    frc2::cmd::RunOnce(
-     
-      [this] { Indexer.ToggleIndexer(); }, {&Indexer}
-
-    )
-  );
-  
 };
 
 void RobotContainer::DriveForward(double SL, double SR, double SH) {
@@ -119,18 +116,41 @@ void RobotContainer::ShootStop() {
   Shooter.ShooterStop(); 
 };
 
+
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  
-  Shoot(); 
-  frc2::WaitCommand(5_s);
-  ShootStop(); 
-  DriveForward(2);
-  TurnRight();
-  Intake.On();
-  DriveForward(0.25,0.25,0);
-  frc2::WaitCommand(5);
-  TurnRight();
-  DriveForward(0.25,0.25,0.25);
-  frc2::WaitCommand(5);
-  return frc2::cmd::None();
-};
+  using namespace frc2::cmd;
+
+  return Sequence(
+
+    // Shoot
+    RunOnce([this] { Shoot(); }),
+    Wait(5_s),
+    RunOnce([this] { ShootStop(); }),
+
+    // Drive forward
+    RunOnce([this] { Drive.Drive(1, 1, 0); }),
+    Wait(2_s),
+    RunOnce([this] { Drive.Drive(0, 0, 0); }),
+
+    // Turn right
+    RunOnce([this] { TurnRight(); }),
+    Wait(1_s),
+
+    // Intake on
+    RunOnce([this] { Intake.On(); }),
+
+    // Drive forward slow
+    RunOnce([this] { Drive.Drive(0.25, 0.25, 0); }),
+    Wait(5_s),
+    RunOnce([this] { Drive.Drive(0, 0, 0); }),
+
+    // Turn again
+    RunOnce([this] { TurnRight(); }),
+    Wait(1_s),
+
+    // Final move
+    RunOnce([this] { Drive.Drive(0.25, 0.25, 0.25); }),
+    Wait(5_s),
+    RunOnce([this] { Drive.Drive(0, 0, 0); })
+  );
+}

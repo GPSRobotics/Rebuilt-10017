@@ -16,8 +16,15 @@ namespace FeederConstants {
     double kFeederSpeed = 1; 
 }; 
 
+namespace Timers {
+
+    int TimerRB = 0;
+}
+
+
+
 namespace Toggles {
 
-    bool toggleRB = true;
+    bool IntakeToggle = true;
 }
 
