@@ -81,16 +81,16 @@ void RobotContainer::ConfigureBindings() {
   
 };
 
-void RobotContainer::DriveForward(double RunTime) {
+void RobotContainer::DriveForward(double SL, double SR, double SH) {
 
-  Drive.Drive(0.5, 0.5, 0.0);
+  Drive.Drive(SL, SR, SH);
   frc2::WaitCommand(2_s);
   Drive.Drive(0, 0, 0);
 };
 
-void RobotContainer::DriveBackwards(double RunTime) {
+void RobotContainer::DriveBackwards(double SL, double SR, double SH) {
 
-  Drive.Drive(-0.5, -0.5, 0);
+  Drive.Drive(SL, SR, SH);
   frc2::WaitCommand(2_s);
   Drive.Drive(0, 0, 0);
 };
@@ -121,18 +121,16 @@ void RobotContainer::ShootStop() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   
-  Intake.On();
-  frc2::WaitCommand(2_s);
-  Intake.Off();
   Shoot(); 
-  frc2::WaitCommand(2_s);
+  frc2::WaitCommand(5_s);
   ShootStop(); 
   DriveForward(2);
   TurnRight();
   Intake.On();
-  DriveForward(2);
+  DriveForward(0.25,0.25,0);
+  frc2::WaitCommand(5);
   TurnRight();
-  DriveForward(2);
-  Intake.Off();
+  DriveForward(0.25,0.25,0.25);
+  frc2::WaitCommand(5);
   return frc2::cmd::None();
 };
