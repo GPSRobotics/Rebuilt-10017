@@ -1,6 +1,6 @@
 #pragma once
 
-#include <subsystem/IntakeSubsystems/Constants.h>
+#include <GlobalConstants.h>
 
 #include <rev/SparkMax.h>
 
@@ -8,7 +8,8 @@
 
 class IntakeSubsystem : public frc2::SubsystemBase{
     public:
-    IntakeSubsystem()
+    
+    IntakeSubsystem();
 
     void On();
 

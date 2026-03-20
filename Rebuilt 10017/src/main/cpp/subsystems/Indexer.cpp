@@ -2,18 +2,18 @@
 
 
 IndexerSubsystem::IndexerSubsystem() {
-}
+};
 
 void IndexerSubsystem::RunIndexer() {
     
     indexerMotor.Set(IndexerConstants::kIndexerSpeed);
 
-}
+};
 
 void IndexerSubsystem::StopIndexer() {
 
     indexerMotor.Set(0);
-}
+};
 
 bool IndexerSubsystem::ToggleIndexer() {
 
@@ -27,5 +27,5 @@ bool IndexerSubsystem::ToggleIndexer() {
 
         IndexerSubsystem::StopIndexer();
         Toggles::toggleRB == !Toggles::toggleRB;
-    }
-}
+    };
+};

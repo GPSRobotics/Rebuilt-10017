@@ -36,22 +36,22 @@ ShooterSubsystem::ShooterSubsystem():
     kLeftShooterMotor.Configure(leftConfig,               
         SparkFlex::ResetMode::kResetSafeParameters,
         SparkFlex::PersistMode::kPersistParameters);            
-}
+};
 
     void ShooterSubsystem::Periodic() {
-    }
+    };
 
     void ShooterSubsystem::ShooterShoot(){
         SetRPM(1000.0);
-    }
+    };
 
     void ShooterSubsystem::ShooterStop(){
         SetRPM(0.0);
-    }
+    };
 
     void ShooterSubsystem::ShooterBack(){
         SetRPM(-1000.0);
-    }
+    };
 
     void ShooterSubsystem::SetRPM(double rpm){
         m_targetRPM = rpm;
@@ -59,9 +59,10 @@ ShooterSubsystem::ShooterSubsystem():
         m_leftController.SetReference(rpm, rev::spark::SparkBase::ControlType::kVelocity);
         m_rightController.SetReference(rpm, rev::spark::SparkBase::ControlType::kVelocity);
 
-    }
+    };
 
     double ShooterSubsystem::GetRPM(){
         return (m_leftEncoder.GetVelocity() + m_rightEncoder.GetVelocity()) / 2.0;
     
-    }
+    };
+

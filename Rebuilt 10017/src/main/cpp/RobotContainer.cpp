@@ -9,14 +9,13 @@
 #include <frc2/command/RunCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/Commands.h>
-
-#include "commands/Autos.h"
-#include "commands/ExampleCommand.h"
-#include "Constants.h"
 #include "subsystems/Indexer/Indexer.h"
 #include "subsystems/Feeder/Feeder.h"
 #include "frc2/command/Commands.h"
 #include "frc2/command/button/JoystickButton.h"
+#include "frc2/command/WaitCommand.h"
+
+
 
 
 RobotContainer::RobotContainer() {
@@ -30,15 +29,15 @@ drive.SetDefaultCommand(
     }, {&drive})
 );
   ConfigureBindings();
-}
+};
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
-  controller.X().WhileTrue(frc2::cmd::Run([this](){
+  m_driverController.X().WhileTrue(frc2::cmd::Run([this](){
       Intake.On();
   },{&Intake}));
   
-  controller.Y().WhileTrue(frc2::cmd::Run([this](){
+ m_driverController.Y().WhileTrue(frc2::cmd::Run([this](){
       Intake.Off();
   },{&Intake}));
   //d pad up On
@@ -80,8 +79,60 @@ void RobotContainer::ConfigureBindings() {
     )
   );
   
-}
+};
+
+void RobotContainer::DriveForward(double RunTime) {
+
+  Drive.Drive(0.5, 0.5, 0.0);
+  frc2::WaitCommand(2_s);
+  Drive.Drive(0, 0, 0);
+};
+
+void RobotContainer::DriveBackwards(double RunTime) {
+
+  Drive.Drive(-0.5, -0.5, 0);
+  frc2::WaitCommand(2_s);
+  Drive.Drive(0, 0, 0);
+};
+
+void RobotContainer::TurnLeft() {
+
+  Drive.Drive(-0.5, 0.5, 0);
+};
+
+void RobotContainer::TurnRight() {
+
+  Drive.Drive(0.5, -0.5, 0);
+};
+
+void RobotContainer::Shoot() {
+
+  Indexer.RunIndexer();
+  Feeder.RunFeeder();
+  Shooter.ShooterShoot();
+};
+
+void RobotContainer::ShootStop() {
+
+  Indexer.StopIndexer();
+  Feeder.StopFeeder(); 
+  Shooter.ShooterStop(); 
+};
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  // An example command will be run in autonomous
-}
+  
+  Intake.On();
+  frc2::WaitCommand(2_s);
+  Intake.Off();
+  Shoot(); 
+  frc2::WaitCommand(2_s);
+  ShootStop(); 
+  DriveForward(2);
+  TurnRight();
+  Intake.On();
+  DriveForward(2);
+  TurnRight();
+  DriveForward(2);
+  Intake.Off();
+  return frc2::cmd::None();
+};

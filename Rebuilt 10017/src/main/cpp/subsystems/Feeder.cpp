@@ -2,18 +2,17 @@
 
 
 FeederSubsystem::FeederSubsystem() {
-}
+};
 
 void FeederSubsystem::RunFeeder() {
     
     feederMotor.Set(FeederConstants::kFeederSpeed);
-
-}
+};
 
 void FeederSubsystem::StopFeeder() {
 
     feederMotor.Set(0);
-}
+};
 
 bool FeederSubsystem::ToggleFeeder() {
 
@@ -27,5 +26,5 @@ bool FeederSubsystem::ToggleFeeder() {
 
         FeederSubsystem::StopFeeder();
         Toggles::toggleRB == !Toggles::toggleRB;
-    }
-}
+    };
+};

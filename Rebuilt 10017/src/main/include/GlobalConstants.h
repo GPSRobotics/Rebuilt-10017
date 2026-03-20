@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-#include <GlobalConstants.h>
+
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants.  This should not be used for any other
@@ -17,27 +17,43 @@
 namespace OperatorConstants {
 
     inline constexpr int kDriverControllerPort = 0;
-
-
+};
 
 namespace IntakeConstants{
-  constexpr int IntakePort = 1;
+
+    inline constexpr int IntakePort = 1;
+    extern double IntakeSpeed;
 };
-}  // namespace OperatorConstants
+ // namespace OperatorConstants
 
 namespace IndexerConstants {
 
-    constexpr int kIndexerMotor = 1;
-    constexpr double kIndexerSpeed = 0.8; 
+    inline constexpr int kIndexerMotor = 2;
+    extern double kIndexerSpeed;
 };
 
 namespace FeederConstants {
 
-    constexpr int kFeederMotor = 2; 
-    constexpr double kFeederSpeed = 1; 
+    inline constexpr int kFeederMotor = 3;
+    extern double kFeederSpeed;
 }; 
 
 namespace Toggles {
 
     extern bool toggleRB;
 }
+
+
+namespace ShooterConstants {
+
+    inline constexpr int kLeftMotorPort = 4;
+    inline constexpr int kRightMotorPort = 5;
+
+    //------ PID ------
+    inline constexpr double KP = 0;
+    inline constexpr double KI = 0;
+    inline constexpr double KD = 0;
+    inline constexpr double KFF = 0;
+    
+};
+

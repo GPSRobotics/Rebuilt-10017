@@ -9,7 +9,7 @@
 #include <frc2/command/button/CommandXboxController.h>
 
 #include "GlobalConstants.h"
-#include "subsystems/IntakeSubsystem/IntakeSubsystem.h"
+#include "subsystems/Intake/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
 
 #include "subsystems/DriveSubsystem/DriveSubsystem.h"
@@ -39,6 +39,14 @@ class RobotContainer {
   IntakeSubsystem Intake;
   FeederSubsystem Feeder;
   IndexerSubsystem Indexer;
+  ShooterSubsystem Shooter;
+  DriveSubsystem Drive;
 
   void ConfigureBindings();
+  void Shoot(); 
+  void DriveForward(double RunTime);
+  void TurnRight();
+  void TurnLeft();
+  void DriveBackwards(double RunTime);
+  void ShootStop();
 };
