@@ -50,15 +50,15 @@ void RobotContainer::ConfigureBindings() {
   //d pad down Off
 
   m_driverController.RightTrigger().WhileTrue(frc2::cmd::Run([this](){
-  shooter.ShooterShoot();
+  Shooter.ShooterShoot();
   }, {&shooter}));
 
   m_driverController.RightBumper().WhileTrue(frc2::cmd::Run([this](){
-    shooter.ShooterStop();
+    Shooter.ShooterStop();
   }, {&shooter}));
 
   m_driverController.LeftTrigger().WhileTrue(frc2::cmd::Run([this](){
-    shooter.ShooterBack();
+    Shooter.ShooterBack();
   }, {&shooter})); 
   
   //Runs Feeder 
