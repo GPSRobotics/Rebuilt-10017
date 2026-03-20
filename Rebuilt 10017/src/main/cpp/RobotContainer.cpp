@@ -21,13 +21,13 @@
 
 RobotContainer::RobotContainer() {
 
-drive.SetDefaultCommand(
+Drive.SetDefaultCommand(
     frc2::cmd::Run([this] {
         double left = -m_driverController.GetLeftY();
         double right = -m_driverController.GetRightY();
         double strafe = m_driverController.GetLeftX();
-        drive.Drive(left, right, strafe);
-    }, {&drive})
+        Drive.Drive(left, right, strafe);
+    }, {&Drive})
 );
   ConfigureBindings();
 };
@@ -51,46 +51,41 @@ void RobotContainer::ConfigureBindings() {
 
   m_driverController.RightTrigger().WhileTrue(frc2::cmd::Run([this](){
   Shooter.ShooterShoot();
-  }, {&shooter}));
+  }, {&Shooter}));
 
   m_driverController.RightBumper().WhileTrue(frc2::cmd::Run([this](){
     Shooter.ShooterStop();
-  }, {&shooter}));
+  }, {&Shooter}));
 
   m_driverController.LeftTrigger().WhileTrue(frc2::cmd::Run([this](){
     Shooter.ShooterBack();
-  }, {&shooter})); 
+  }, {&Shooter})); 
   
   //Runs Feeder 
 
-  m_driverController.RightTrigger()
-  .WhileTrue(
-
-    frc2::cmd::RunOnce(
-     
-      [this] { 
+  m_driverController.RightTrigger().WhileTrue(
+    frc2::cmd::Run([this] { 
         Feeder.RunFeeder(); 
         Indexer.RunIndexer();
-
-      }, {&Feeder}
-      
-    )
+     }, {&Feeder, &Indexer})
   );
 };
 
-void RobotContainer::DriveForward(double SL, double SR, double SH) {
+frc2::CommandPtr RobotContainer::DriveForward() {
+  return frc2::cmd::StartEnd(
+    [this] { Drive.Drive(1, 1, 0); },
+    [this] { Drive.Drive(0, 0, 0); },
+    {&Drive}
+  ).WithTimeout(2_s);
+}
 
-  Drive.Drive(SL, SR, SH);
-  frc2::WaitCommand(2_s);
-  Drive.Drive(0, 0, 0);
-};
-
-void RobotContainer::DriveBackwards(double SL, double SR, double SH) {
-
-  Drive.Drive(SL, SR, SH);
-  frc2::WaitCommand(2_s);
-  Drive.Drive(0, 0, 0);
-};
+frc2::CommandPtr RobotContainer::DriveBackwards() {
+  return frc2::cmd::StartEnd(
+    [this] { Drive.Drive(-1, -1, 0); },
+    [this] { Drive.Drive(0, 0, 0); },
+    {&Drive}
+  ).WithTimeout(2_s);
+}
 
 void RobotContainer::TurnLeft() {
 
