@@ -10,10 +10,9 @@
 #include <rev/SparkClosedLoopController.h>
 #include <rev/RelativeEncoder.h>
 
-#include <subsystems/ShooterSubsystem/Constants.h>
-#include <GlobalConstants.h>
+#include "subsystems/ShooterSubsystem/Constants.h"
+#include "GlobalConstants.h"
 
-using namespace frc;
 
 class ShooterSubsystem : public frc2::SubsystemBase {
 public:
@@ -29,14 +28,17 @@ public:
     void ShooterBarge();
     void ShooterTower();
     void ShooterHub();
+    void ShooterHubRight();
     void SetShooterRPM(double rpm);
+    double SetShooterRPMFromDistance(double distanceMeters);
+    double InterpolateRPM(double distanceMeters);
 
     // ── Telemetry helpers ────────────────────────────────────
     double GetLeftRPM()  const;
     double GetRightRPM() const;
     bool   AtTargetRPM() const;
 
-    void SetShooterPower(double newPower);
+    void SetShooterPower(double power);
     void GetShooterPower();
     void SetShooterState(int newState);
     int  GetShooterStates();

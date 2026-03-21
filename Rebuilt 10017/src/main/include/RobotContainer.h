@@ -10,24 +10,24 @@
 #include <networktables/NetworkTableInstance.h>
 #include <networktables/IntegerTopic.h>
 
-#include "subsystems/Drivesubsystem/DriveSubsystem.h"
+#include "subsystems/DriveSubsystem/DriveSubsystem.h"
 #include "subsystems/ShooterSubsystem/ShooterSubsystem.h"
 #include "subsystems/InjectorSubsystem/InjectorSubsystem.h"
 #include "subsystems/LinearActuatorSubsystem/LinearActuatorSubsystem.h"
 #include "subsystems/IntakeSubsystem/IntakeSubsystem.h"
 #include "subsystems/AgitatorSubsystem/AgitatorSubsystem.h"
-#include "autos/ShootHubAuto.h"
+/* #include "autos/ShootHubAuto.h"
 #include "autos/ShootTowerAuto.h"
 #include "autos/ShootBargeAuto.h"
 #include "autos/ShootCornerAuto.h"
 #include "autos/RightSideAuto.h"
-#include "autos/ShootHubRightAuto.h"
+#include "autos/ShootHubRightAuto.h"*/
 
 class RobotContainer {
 public:
     RobotContainer();
 
-    std::optional<frc2::CommandPtr> GetAutonomousCommand();
+frc2::CommandPtr GetAutonomousCommand();
     void UpdateDashboard();
 
 private:
@@ -53,7 +53,7 @@ private:
     //   9 = Do Nothing
     nt::IntegerEntry m_autoSelection;
 
-    // Still keep the SendableChooser for display purposes
+    /*Still keep the SendableChooser for display purposes
     frc::SendableChooser<std::string> m_chooser;
     static constexpr const char* kAutoHub           = "Shoot Hub";
     static constexpr const char* kAutoTower         = "Shoot Tower";
@@ -62,6 +62,7 @@ private:
     static constexpr const char* kAutoNothing       = "Do Nothing";
     static constexpr const char* kAutoRightSide     = "Right Side";
     static constexpr const char* kShootHubRightSide = "Shoot Hub Right Side";
+    */
 
     void ConfigureBindings();
 };

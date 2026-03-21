@@ -65,13 +65,51 @@ void ShooterSubsystem::SetShooterRPM(double rpm)
     rightPID.SetReference(rpm, SparkLowLevel::ControlType::kVelocity);
 }
 
-void ShooterSubsystem::ShooterCorner()         { SetShooterRPM(ShooterConstants::kShootCornerRPM); }
-void ShooterSubsystem::ShooterOff()            { SetShooterRPM(ShooterConstants::kStopRPM);        }
-void ShooterSubsystem::ShooterIntake()         { SetShooterRPM(ShooterConstants::kIntakeRPM);      }
-void ShooterSubsystem::ShooterBarge()          { SetShooterRPM(ShooterConstants::kShootBargeRPM);  }
-void ShooterSubsystem::ShooterTower()          { SetShooterRPM(ShooterConstants::kShootTowerRPM);  }
-void ShooterSubsystem::ShooterHub()            { SetShooterRPM(ShooterConstants::kShootHubRPM);    }
-void ShooterSubsystem::ShooterHubRight()     { SetShooterRPM(ShooterConstants::kShootHubRightRPM);    }
+void ShooterSubsystem::ShooterCorner() 
+{ SetShooterRPM(ShooterConstants::kShootCornerRPM); }
+
+void ShooterSubsystem::ShooterOff() { 
+SetShooterRPM(ShooterConstants::kStopRPM);
+ }
+void ShooterSubsystem::ShooterIntake() {
+SetShooterRPM(ShooterConstants::kIntakeRPM);     
+ }
+void ShooterSubsystem::ShooterBarge() { 
+SetShooterRPM(ShooterConstants::kShootBargeRPM);
+ }
+void ShooterSubsystem::ShooterTower(){ 
+SetShooterRPM(ShooterConstants::kShootTowerRPM);  
+}
+
+void ShooterSubsystem::ShooterHub() 
+{ SetShooterRPM(ShooterConstants::kShootHubRPM);   
+}
+
+void ShooterSubsystem::ShooterHubRight(){ 
+    SetShooterRPM(ShooterConstants::kShootHubRightRPM);  
+}
+
+void ShooterSubsystem::SetShooterPower(double power) {
+    leftShooterMotor.Set(power);
+    rightShooterMotor.Set(power);
+}
+void ShooterSubsystem::GetShooterPower() {
+}
+void ShooterSubsystem::SetShooterState(int newState){ 
+    ShooterState = newState; 
+}
+int  ShooterSubsystem::GetShooterStates(){ 
+    return ShooterState; 
+}
+void ShooterSubsystem::SetShooterBrakeMode(bool state) {
+
+}
+void ShooterSubsystem::ConfigShooter(){
+}
+void ShooterSubsystem::ShooterIn() { 
+    SetShooterRPM(ShooterConstants::kReverseRPM); 
+}
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Distance-based RPM
@@ -135,10 +173,3 @@ bool ShooterSubsystem::AtTargetRPM() const
 // ─────────────────────────────────────────────────────────────────────────────
 //  Legacy stubs 
 // ─────────────────────────────────────────────────────────────────────────────
-void ShooterSubsystem::SetShooterPower(double newPower) {}
-void ShooterSubsystem::GetShooterPower() {}
-void ShooterSubsystem::SetShooterState(int newState)    { ShooterState = newState; }
-int  ShooterSubsystem::GetShooterStates()               { return ShooterState; }
-void ShooterSubsystem::SetShooterBrakeMode(bool state)  {}
-void ShooterSubsystem::ConfigShooter()                  {}
-void ShooterSubsystem::ShooterIn()                      { SetShooterRPM(ShooterConstants::kReverseRPM); }

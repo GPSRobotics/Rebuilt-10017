@@ -19,7 +19,7 @@ RobotContainer::RobotContainer()
             .GetEntry(0)  // default = 0 (Shoot Hub)
       }
 {
-    // ── Publish auton options to SmartDashboard ───────────────
+    /* ── Publish auton options to SmartDashboard ───────────────
     // SendableChooser still shows in Elastic for reference,
     // but the actual selection comes from the NT integer below.
     m_chooser.SetDefaultOption(kAutoHub,           kAutoHub);
@@ -29,7 +29,7 @@ RobotContainer::RobotContainer()
     m_chooser.AddOption(kAutoNothing,       kAutoNothing);
     m_chooser.AddOption(kAutoRightSide,     kAutoRightSide);
     m_chooser.AddOption(kShootHubRightSide, kShootHubRightSide);
-    frc::SmartDashboard::PutData("Auton Chooser", &m_chooser);
+    frc::SmartDashboard::PutData("Auton Chooser", &m_chooser);*/
 
     // Publish the auton map so the driver knows which number = which auton
     frc::SmartDashboard::PutString("Auton/0", "Shoot Hub");
@@ -229,10 +229,13 @@ void RobotContainer::ConfigureBindings() {
 //  GetAutonomousCommand
 //  Reads the integer from NetworkTables written by Elastic
 // ─────────────────────────────────────────────────────────────────────────────
-std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() {
-    int selected = (int)m_autoSelection.Get();
+frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
+    return frc2::cmd::None();
 
-    switch (selected) {
+
+    /* int selected = (int)m_autoSelection.Get();
+
+   switch (selected) {
         case 0: return ShootHubAuto     (&shooter, &injector, &agitator, &intake);
         case 1: return ShootTowerAuto   (&shooter, &injector, &agitator, &intake);
         case 2: return ShootBargeAuto   (&shooter, &injector, &agitator, &intake);
@@ -241,4 +244,5 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() {
         case 5: return ShootHubRightAuto(&shooter, &injector, &agitator, &intake);
         default: return std::nullopt;  // 9 or anything else = do nothing
     }
+        */
 }

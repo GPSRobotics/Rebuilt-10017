@@ -37,7 +37,11 @@ void InjectorSubsystem::InjectorIn() {
     injectorMotor.Set(1.0);
 }
 
-void InjectorSubsystem::SetInjectorPower(double newPower) {}
+void InjectorSubsystem::SetInjectorPower(double newPower) {
+    injectorMotor.Set(newPower);
+}
+//Made sure to create the function so it would run 
+
 void InjectorSubsystem::GetInjectorPower() {}
 void InjectorSubsystem::SetInjectorState(int newState) {}
 int  InjectorSubsystem::GetInjectorStates() { return 0; }
