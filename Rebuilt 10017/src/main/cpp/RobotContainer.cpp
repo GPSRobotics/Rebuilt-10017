@@ -132,6 +132,35 @@ void RobotContainer::ConfigureBindings() {
         )
     );
 
+    driverController.RightBumper().ToggleOnTrue(
+        frc2::cmd::StartEnd(
+         [this]() {
+           shooter.SetShooterPower(0.9); //on
+           injector.InjectorOut(); //on
+        },
+
+        [this]() {
+                shooter.SetShooterPower(0.0); //off
+                injector.InjectorOff(); //off
+            }, 
+            {&shooter,&injector}
+    
+        )
+    );
+    //AU what this does is RB now runs the shooter and injector TOGGLE, so when pressed once its ON when pressed again it is OFF
+
+    driverController.RightTrigger().WhileTrue(
+    frc2::cmd::StartEnd(
+        [this]() {
+            agitator.AgitatorAgitate();  // ON (90%)
+        },
+        [this]() {
+            agitator.AgitatorOff();      // OFF when released
+        },
+        {&agitator}
+    )
+);
+//makes sure to run continuously without an stop and SHOULD turn on and off according to the trigger
     driverController.LeftBumper().WhileTrue(
         frc2::cmd::Sequence(
             frc2::cmd::RunOnce([this]() {
