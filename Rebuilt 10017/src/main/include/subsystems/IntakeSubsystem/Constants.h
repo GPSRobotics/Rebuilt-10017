@@ -10,12 +10,12 @@ namespace IntakeConstants {
     constexpr int kArmPort      = 3;   // SparkMax  (NEO)        - arm angle
 
     // ── Roller ────────────────────────────────────────────────
-    constexpr double kIntakeDefaultPower = 0.8;
+    constexpr double kIntakeDefaultPower = 1.0;
     constexpr double kHoldingPower       = -0.2;
 
     // ── Arm Positions (degrees) ───────────────────────────────
     constexpr double kStowedAngle    =  1.0;  // arm up / stowed
-    constexpr double kDeployAngle    = 81.0;  // arm down / intaking
+    constexpr double kDeployAngle    = 77.0;  // arm down / intaking
     constexpr double kAngleTolerance =  2.0;  // degrees
 
     // ── Arm Soft Limits ───────────────────────────────────────

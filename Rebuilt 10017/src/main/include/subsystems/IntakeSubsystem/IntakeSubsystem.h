@@ -46,8 +46,8 @@ private:
     int    IntakeState = IntakeConstants::IntakeStates::kIntakePowerMode;
     double IntakePower = IntakeConstants::kIntakeDefaultPower;
 
-    // Roller – SparkFlex
-    rev::spark::SparkFlex intakeMotor;
+    // Roller – SparMax
+    rev::spark::SparkMax intakeMotor;
 
     // Arm – SparkMax + NEO
     rev::spark::SparkMax                  armMotor;

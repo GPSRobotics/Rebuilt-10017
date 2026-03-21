@@ -22,7 +22,7 @@ AgitatorSubsystem::AgitatorSubsystem() :
 void AgitatorSubsystem::Periodic() {}
 
 void AgitatorSubsystem::AgitatorOut() {
-    agitatorMotor.Set(-0.7);
+    agitatorMotor.Set(-0.9);
 }
 
 void AgitatorSubsystem::AgitatorOff() {
@@ -30,11 +30,11 @@ void AgitatorSubsystem::AgitatorOff() {
 }
 
 void AgitatorSubsystem::AgitatorAgitate() {
-    agitatorMotor.Set(0.7);
+    agitatorMotor.Set(0.9);
 }
 
 void AgitatorSubsystem::AgitatorIn() {
-    agitatorMotor.Set(0.7);
+    agitatorMotor.Set(0.9);
 }
 
 void AgitatorSubsystem::SetAgitatorPower(double newPower) {}
