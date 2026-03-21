@@ -14,10 +14,10 @@ IntakeSubsystem::IntakeSubsystem()
       armPID     {armMotor.GetClosedLoopController()},
       armEncoder {armMotor.GetEncoder()}
 {
-    // ── Roller (SparkFlex) config ─────────────────────────────
-    rev::spark::SparkFlexConfig rollerConfig{};
+    // ── Roller (SparkMax) config ─────────────────────────────
+    rev::spark::SparkMaxConfig rollerConfig{};
     rollerConfig.Inverted(true)
-                .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast);
+                .SetIdleMode(rev::spark::SparkMaxConfig::IdleMode::kCoast);
 
     intakeMotor.Configure(rollerConfig,
         rev::ResetMode::kResetSafeParameters,
